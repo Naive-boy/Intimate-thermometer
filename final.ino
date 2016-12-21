@@ -210,6 +210,23 @@ void draw(void) {
         u8g.drawXBMP( 64, 18, 32, 32, u8g_logo_bits11);
         u8g.drawXBMP( 96, 18, 32, 32, u8g_logo_bits12);//太热
       }//判断温度显示温馨提示
+    }else{
+    u8g.drawXBMP( 0, 18, 32, 32, u8g_logo_bits13);
+    u8g.drawXBMP( 32, 18, 32, 32, u8g_logo_bits14);
+    u8g.drawXBMP( 64, 18, 32, 32, u8g_logo_bits15);
+    u8g.drawXBMP( 96, 18, 32, 32, u8g_logo_bits16);
+  }
+}
+void setup(void)
+{
+  pinMode(sensorPin, INPUT);
+  Serial.begin(115200);
+  pinMode(buzzer_pin, OUTPUT);
+  Wire.begin(); 
+}
+void loop(void)
+{
+  if(state==1){
     Serial.println("Somebody is in this area!");//有人时
     buzzer_speak = true;//打开蜂鸣器
     delay(500);           
@@ -281,29 +298,17 @@ void draw(void) {
     delay(500);
     tone(6,0,250);//音乐
     buzzer_speak = false;//关闭蜂鸣器
-    }else{
-    u8g.drawXBMP( 0, 18, 32, 32, u8g_logo_bits13);
-    u8g.drawXBMP( 32, 18, 32, 32, u8g_logo_bits14);
-    u8g.drawXBMP( 64, 18, 32, 32, u8g_logo_bits15);
-    u8g.drawXBMP( 96, 18, 32, 32, u8g_logo_bits16);
-    Serial.println("No one!");//没有人时
-    delay(500);
-  }
-}
-void setup(void)
-{
-  pinMode(sensorPin, INPUT);
-  Serial.begin(115200);
-  pinMode(buzzer_pin, OUTPUT);
-  Wire.begin(); 
-}
-void loop(void)
-{
     u8g.firstPage();  
     do {
       draw();
     } 
     while( u8g.nextPage() );
+  }else{
+    Serial.println("No one!");//没有人时
+    u8g.firstPage();  
+    do {
+      draw();
+    } 
+    while( u8g.nextPage() );
+    }
 }
-
-
